@@ -1,4 +1,4 @@
-package com.thoughtworks.repository;
+package com.thoughtworks.repos;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
