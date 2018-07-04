@@ -32,6 +32,11 @@ public class ReposRepositoryImpl implements ReposRepository{
 	 * Thoughtworks Url repositories 
 	 */
 	public static final String THOUGHTWORKS_REPOSITORY = "https://api.github.com/orgs/thoughtworks/repos?access_token="+Headers.PERSONAL_ACCESS_TOKENS;
+
+	/**
+	 * Thoughtworks Url repository contributors
+	 */
+	private static final String THOUGHTWORKS_CONTRIBUTORS = "https://api.github.com/repos/thoughtworks/%s/contributors?access_token="+Headers.PERSONAL_ACCESS_TOKENS;
 	
 	private Logger logger = Logger.getLogger(ReposServiceImpl.class);
 	
@@ -68,7 +73,7 @@ public class ReposRepositoryImpl implements ReposRepository{
 		HttpHeaders httpHeaders = Headers.createHeaders();
 		logger.info("Starting the Contributors search for each repository.");
     	for (Repository repository : repositories) {
-    		String url = "https://api.github.com/repos/thoughtworks/"+repository.getName()+"/contributors?access_token="+Headers.PERSONAL_ACCESS_TOKENS;
+    		String url = String.format(THOUGHTWORKS_CONTRIBUTORS, repository.getName());
     		RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<? extends List<LinkedHashMap<String,Object>>> responseEntity = restTemplate.exchange(url,HttpMethod.GET,new HttpEntity<Object>(httpHeaders),(Class<? extends List<LinkedHashMap<String,Object>>>)List.class);
 		    List<LinkedHashMap<String,Object>> contributorsMap = (List<LinkedHashMap<String,Object>>) responseEntity.getBody();

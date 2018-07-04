@@ -7,7 +7,7 @@ public class Headers {
 	/**
 	 * GitHub Personal Access Tokens 
 	 */
-	public static final String PERSONAL_ACCESS_TOKENS = "ba158d565c9d9f3fd73099995d2ce4000968d1ff";
+	public static final String PERSONAL_ACCESS_TOKENS = "3bdcc28be770787b6f23d04925ad9edfe421ceec";
 	
 	/**
 	 * Creates a HttpHeaders with Personal Access Tokens necessary to limited
