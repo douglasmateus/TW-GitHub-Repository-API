@@ -28,6 +28,8 @@ import com.thoughtworks.repos.service.ReposService;
 @Service
 public class ReposServiceImpl implements ReposService {
 
+	private static final int MAX_TOP_LANGUAGES_CONTRIBUTORS = 3;
+
 	private ReposRepository reposRepository;
 	
 	private Logger logger = Logger.getLogger(ReposServiceImpl.class);
@@ -51,7 +53,7 @@ public class ReposServiceImpl implements ReposService {
 		reposRepository.findContributorsByRepository(repositories);
 		
 		logger.info("Create Languages");
-		Map<String, Languages> languagesMap = this.createLanguages(repositories);		
+		Map<String, Languages> languagesMap = this.createLanguages(repositories);
 		for (String keySet : languagesMap.keySet()) {
 			languages.add(languagesMap.get(keySet));
 		}
@@ -77,8 +79,7 @@ public class ReposServiceImpl implements ReposService {
 			String repositoryName = repository.getName();
 			long stargazers = repository.getStargazers();
 			long forks = repository.getForks();
-			long contributors = repository.getContributors() != null && repository.getContributors().size() > 0
-					? repository.getContributors().size() : 0;
+			long contributors = repository.getContributors() != null && repository.getContributors().size() > 0 ? repository.getContributors().size() : 0;
 			List<Contributor> topContributors = repository.getContributors();
 			Languages languages = new Languages();
 			if (repository.getLanguage() == null) {
@@ -120,7 +121,7 @@ public class ReposServiceImpl implements ReposService {
 	public List<TopRepositories> createTopRepositories(List<Languages> languages) {
 		List<TopRepositories> topRepositories = new ArrayList<TopRepositories>();
 		Collections.sort(languages);
-		int sizeLanguages = languages.size() > 3 ? 3 : languages.size();
+		int sizeLanguages = languages.size() > MAX_TOP_LANGUAGES_CONTRIBUTORS ? MAX_TOP_LANGUAGES_CONTRIBUTORS : languages.size();
 		for (int i = 0; i < sizeLanguages; i++) {
 			TopRepositories topRepository = new TopRepositories();
 			topRepository.setLanguage(languages.get(i).getLanguage());
@@ -129,15 +130,18 @@ public class ReposServiceImpl implements ReposService {
 			topRepository.setStars(languages.get(i).getStars());
 			topRepository.setForks(languages.get(i).getForks());
 			topRepository.setRepository(languages.get(i).getRepositories());
-			
-			List<Contributor> topContributors = languages.get(i).getTopContributors();
-			Collections.sort(topContributors);
-			int sizeTopContributors = topContributors.size() > 3 ? 3 : topContributors.size();
-			List<Contributor> top3Contributors = new ArrayList<Contributor>();
-			for (int j = 0; j < sizeTopContributors; j++) {
-				top3Contributors.add(topContributors.get(j));
+			if (languages.get(i).getTopContributors() == null) {
+				logger.info("Language "+ languages.get(i).getLanguage() +" has no Contributors.");
+			} else {
+				List<Contributor> topContributors = languages.get(i).getTopContributors();
+				Collections.sort(topContributors);
+				int sizeTopContributors = topContributors.size() > MAX_TOP_LANGUAGES_CONTRIBUTORS ? MAX_TOP_LANGUAGES_CONTRIBUTORS : topContributors.size();
+				List<Contributor> top3Contributors = new ArrayList<Contributor>();
+				for (int j = 0; j < sizeTopContributors; j++) {
+					top3Contributors.add(topContributors.get(j));
+				}
+				topRepository.setTopContributors(top3Contributors);
 			}
-			topRepository.setTopContributors(top3Contributors);
 			topRepositories.add(topRepository);
 		}
 		return topRepositories;

@@ -1,24 +1,49 @@
 package com.thoughtworks.repos;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.thoughtworks.repos.Application;
+import com.thoughtworks.repos.model.Repository;
+import com.thoughtworks.repos.repository.ReposRepository;
+import com.thoughtworks.repos.service.impl.ReposServiceImpl;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = Application.class)
 public class ApplicationTest {
 	
-	@Autowired
-	private TestRestTemplate restTemplate;
-	
-	@Test
-	public void contextLoads() {
+    @MockBean
+    private ReposRepository reposRepository;
+    
+    private Collection<Repository> repositories;
+    
+	@Before
+	public void setUp() throws Exception {
+		ReposServiceImpl reposServiceImpl = new ReposServiceImpl(reposRepository);
+		
+		repositories = new ArrayList<Repository>();
+		Repository repository = new Repository();
+		repository.setId(12345);
+		repository.setName("rapidsMRS");
+		repository.setLanguage("Java");
+		repository.setStargazers(5);
+		repository.setForks(3);
+		repositories.add(repository);
+	}
+    
+    
+    @Test
+	public void shouldRetrieveRepository() throws Exception {
+		//ResponseEntity<Response> response = this.restTemplate.getForEntity("/repositories", Response.class);
+		
+		
 	}
 	
 }
