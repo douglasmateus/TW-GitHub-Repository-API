@@ -36,18 +36,19 @@ public class ReposServiceImpl implements ReposService {
 		this.reposRepository = reposRepository;
 	}
 
+	/**
+	 * Retrieves Response entity
+	 * @return Response
+	 */
 	@Override
 	public Response findAllLanguages() {
-		
-		Collection<Repository> repositories = reposRepository.findAllRepositories();
-		reposRepository.findContributorsByRepository(repositories);
-		return buildReponse(repositories);
-	}
-
-	public Response buildReponse(Collection<Repository> repositories) {
 		Response response = new Response();
 		Thoughtworks thoughtworks = new Thoughtworks();
 		List<Languages> languages = new ArrayList<Languages>();
+		
+		logger.info("Find All Repositories");
+		Collection<Repository> repositories = reposRepository.findAllRepositories();
+		reposRepository.findContributorsByRepository(repositories);
 		
 		logger.info("Create Languages");
 		Map<String, Languages> languagesMap = this.createLanguages(repositories);		
@@ -64,7 +65,12 @@ public class ReposServiceImpl implements ReposService {
 		
 		return response;
 	}
-	
+
+	/**
+	 * Retrieves a map with all valid languages
+	 * @param repositories
+	 * @return Map<String, Languages>
+	 */
 	public Map<String, Languages> createLanguages(Collection<Repository> repositories) {
 		Map<String, Languages> languagesMap = new HashMap<String, Languages>();
 		for (Repository repository : repositories) {
@@ -106,6 +112,11 @@ public class ReposServiceImpl implements ReposService {
 		return languagesMap;
 	}
 
+	/**
+	 * Retrieves a list with the 3 top languages and yours 3 top contributors 
+	 * @param languages
+	 * @return List<TopRepositories>
+	 */
 	public List<TopRepositories> createTopRepositories(List<Languages> languages) {
 		List<TopRepositories> topRepositories = new ArrayList<TopRepositories>();
 		Collections.sort(languages);
