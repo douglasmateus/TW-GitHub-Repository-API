@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,11 +37,9 @@ public class ReposServiceTest {
 	public void shouldFindAllRepositories() {
 		Collection<Repository> repositories = new ArrayList<Repository>();
 		Repository firstRepository = mockRepository();
-		firstRepository.setName("Mock Repo 1");
-		firstRepository.setLanguage("Mock Language 1");
+		firstRepository.setId(Long.valueOf(1));
 		Repository secondRepository = mockRepository();
-		secondRepository.setName("Mock Repo 2");
-		secondRepository.setLanguage("Mock Language 2");
+		secondRepository.setId(Long.valueOf(2));;
 		repositories.add(firstRepository);
 		repositories.add(secondRepository);
 		
@@ -60,7 +57,8 @@ public class ReposServiceTest {
 
 	private Repository mockRepository() {
 		Repository repository = new Repository();
-		repository.setId(new Long(UUID.randomUUID().toString()));
+		repository.setName("Mock Repo");
+		repository.setLanguage("Mock Language");
 		repository.setForks(5);
 		repository.setStargazers(2);
 		List<Contributor> contributors = new ArrayList<Contributor>();

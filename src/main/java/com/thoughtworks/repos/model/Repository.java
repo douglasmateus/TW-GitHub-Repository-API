@@ -113,4 +113,9 @@ public class Repository {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "Repository [id=" + id + ", name=" + name + ", stargazers=" + stargazers + ", language=" + language
+				+ ", forks=" + forks + ", contributors=" + contributors + "]";
+	}
 }
