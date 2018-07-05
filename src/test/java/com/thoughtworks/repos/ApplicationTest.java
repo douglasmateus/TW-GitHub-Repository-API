@@ -1,49 +1,28 @@
 package com.thoughtworks.repos;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import org.springframework.web.client.RestTemplate;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import com.thoughtworks.repos.model.Response;
 
-import com.thoughtworks.repos.model.Repository;
-import com.thoughtworks.repos.repository.ReposRepository;
-import com.thoughtworks.repos.service.impl.ReposServiceImpl;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = Application.class)
 public class ApplicationTest {
 	
-    @MockBean
-    private ReposRepository reposRepository;
-    
-    private Collection<Repository> repositories;
-    
-	@Before
-	public void setUp() throws Exception {
-		ReposServiceImpl reposServiceImpl = new ReposServiceImpl(reposRepository);
-		
-		repositories = new ArrayList<Repository>();
-		Repository repository = new Repository();
-		repository.setId(12345);
-		repository.setName("rapidsMRS");
-		repository.setLanguage("Java");
-		repository.setStargazers(5);
-		repository.setForks(3);
-		repositories.add(repository);
-	}
-    
-    
-    @Test
-	public void shouldRetrieveRepository() throws Exception {
-		//ResponseEntity<Response> response = this.restTemplate.getForEntity("/repositories", Response.class);
-		
-		
-	}
+	public static final String REST_SERVICE_URI = "http://localhost:3000/thoughtworks";
 	
+	/* GET */
+    private static void listAllLanguages() {
+        System.out.println("Testing listAllLanguages API-----------");
+         
+        RestTemplate restTemplate = new RestTemplate();
+        Response response = restTemplate.getForObject(REST_SERVICE_URI+"/repositories/", Response.class);
+        
+        if (response != null) {
+        	System.out.println(response.toString());
+        } else {
+            System.out.println("No language returned----------");
+        }
+    }
+    
+    public static void main(String args[]){
+    	listAllLanguages();
+    }
 }

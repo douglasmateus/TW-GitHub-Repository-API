@@ -18,6 +18,7 @@ import com.thoughtworks.repos.model.Contributor;
 import com.thoughtworks.repos.model.Repository;
 import com.thoughtworks.repos.repository.ReposRepository;
 import com.thoughtworks.repos.service.impl.ReposServiceImpl;
+import com.thoughtworks.repos.util.CoverageIgnore;
 import com.thoughtworks.repos.util.Headers;
 
 /**
@@ -46,6 +47,7 @@ public class ReposRepositoryImpl implements ReposRepository{
 		Collection<Repository> repositories = new ArrayList<Repository>();
 		HttpHeaders httpHeaders = Headers.createHeaders();
 	    RestTemplate restTemplate = new RestTemplate();
+	    @CoverageIgnore
 	    ResponseEntity<? extends List<LinkedHashMap<String,Object>>> responseEntity = restTemplate.exchange(THOUGHTWORKS_REPOSITORY,HttpMethod.GET,new HttpEntity<Object>(httpHeaders),(Class<? extends List<LinkedHashMap<String,Object>>>)List.class);
 	    List<LinkedHashMap<String,Object>> reposMap = (List<LinkedHashMap<String,Object>>) responseEntity.getBody();
 	    
@@ -75,7 +77,8 @@ public class ReposRepositoryImpl implements ReposRepository{
     	for (Repository repository : repositories) {
     		String url = String.format(THOUGHTWORKS_CONTRIBUTORS, repository.getName());
     		RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<? extends List<LinkedHashMap<String,Object>>> responseEntity = restTemplate.exchange(url,HttpMethod.GET,new HttpEntity<Object>(httpHeaders),(Class<? extends List<LinkedHashMap<String,Object>>>)List.class);
+    		@CoverageIgnore
+    		ResponseEntity<? extends List<LinkedHashMap<String,Object>>> responseEntity = restTemplate.exchange(url,HttpMethod.GET,new HttpEntity<Object>(httpHeaders),(Class<? extends List<LinkedHashMap<String,Object>>>)List.class);
 		    List<LinkedHashMap<String,Object>> contributorsMap = (List<LinkedHashMap<String,Object>>) responseEntity.getBody();
 			
 		    if (contributorsMap == null) {

@@ -5,7 +5,8 @@ import java.util.List;
 public class Thoughtworks {
 	
 	private List<Languages> languages;
-	private List<TopRepositories> TopRepositories;
+	
+	private List<TopRepositories> topRepositories;
 	
 	public List<Languages> getLanguages() {
 		return languages;
@@ -14,17 +15,17 @@ public class Thoughtworks {
 		this.languages = languages;
 	}
 	public List<TopRepositories> getTopRepositories() {
-		return TopRepositories;
+		return topRepositories;
 	}
-	public void setTopRepositories(List<TopRepositories> TopRepositories) {
-		this.TopRepositories = TopRepositories;
+	public void setTopRepositories(List<TopRepositories> topRepositories) {
+		this.topRepositories = topRepositories;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((languages == null) ? 0 : languages.hashCode());
-		result = prime * result + ((TopRepositories == null) ? 0 : TopRepositories.hashCode());
+		result = prime * result + ((topRepositories == null) ? 0 : topRepositories.hashCode());
 		return result;
 	}
 	@Override
@@ -41,15 +42,15 @@ public class Thoughtworks {
 				return false;
 		} else if (!languages.equals(other.languages))
 			return false;
-		if (TopRepositories == null) {
-			if (other.TopRepositories != null)
+		if (topRepositories == null) {
+			if (other.topRepositories != null)
 				return false;
-		} else if (!TopRepositories.equals(other.TopRepositories))
+		} else if (!topRepositories.equals(other.topRepositories))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "Thoughtworks [languages=" + languages + ", TopRepositories=" + TopRepositories + "]";
+		return "Thoughtworks [languages=" + languages + ", TopRepositories=" + topRepositories + "]";
 	}
 }

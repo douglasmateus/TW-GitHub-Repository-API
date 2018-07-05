@@ -5,7 +5,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +22,6 @@ import com.thoughtworks.repos.service.ReposService;
 @Path("/repositories")
 public class ReposController {
 
-	private Logger logger = Logger.getLogger(ReposController.class);
-	
 	@Autowired
 	private ReposService reposService;
 	
@@ -34,8 +31,6 @@ public class ReposController {
 	 */
 	@GET
 	public Response getAllLanguages() {
-		
-		logger.info("Starting findAllLanguages");
 		return reposService.findAllLanguages();
 	}
 }
