@@ -20,6 +20,19 @@ The application must be started with the following command:
 mvn spring-boot:run
 ```
 
+### GitHub:
+
+GitHub Inc. is a web-based hosting service for version control using Git. It is mostly used for computer code. It offers all of the distributed version control and source code management (SCM) functionality of Git as well as adding its own features. It provides access control and several collaboration features such as bug tracking, feature requests, task management, and wikis for every project.
+https://en.wikipedia.org/wiki/GitHub
+
+### Personal Access Token:
+
+During the development of this service many requests were made in order to test the service. At one moment, it was necessary to insert in the service the use of Personal Access Token in the service to proceed with the tests because it was not performing authenticated requests to the GitHub API.
+
+For unauthenticated requests, the rate limit allows for up to 60 requests per hour. Unauthenticated requests are associated with the originating IP address, and not the user making requests.
+
+To generate de token it will be necessary go to site: https://github.com/settings/tokens
+
 ### How to test the service:
 
 This service were tested with the use of Postman.
@@ -34,471 +47,130 @@ The steps to test the service will be shown below:
 | ------ | ------ |
 | GET | http://localhost:3000/thoughtworks/repositories |
 
-After execute this method, Postman will show nothing, it´s correct. There is no record in the database.
+JSON Response:
 
-Now, lets include the first record on the database.
-
-| Method | Endpoint |
-| ------ | ------ |
-| POST | http://localhost:8080/products |
-
-
-JSON Request:
 ```sh
+Status: 200 OK
+```
+
+[
 {
-"name": "COCA-COLA",
-"description": "COKE"
+    "thoughtworks": {
+        "languages": [
+            {
+                "language": "Ruby",
+                "contributors": 163,
+                "stars": 688,
+                "forks": 255,
+                "repositories": "cruisecontrol.rb, cruisecontrol.rb-contrib, letshelp.it, HackNightLA, mongoid, metric_fu, mongomapper, global_collect, sinatra-mongoid-config, validates_url, common-ci-tasks, twdreams, israelovesiran"
+            },
+            {
+                "language": "JavaScript",
+                "contributors": 31,
+                "stars": 15,
+                "forks": 3,
+                "repositories": "murmurs.air, shadow-poll, RapidFTR, kinect-spike, twonrails, pringle"
+            },
+            {
+                "language": "Java",
+                "contributors": 9,
+                "stars": 8,
+                "forks": 2,
+                "repositories": "krypton, eclipse_editor_widget, videoworld"
+            },
+            {
+                "language": "C++",
+                "contributors": 3,
+                "stars": 3,
+                "forks": 0,
+                "repositories": "depthjs"
+            },
+            {
+                "language": "Objective-C",
+                "contributors": 2,
+                "stars": 2,
+                "forks": 0,
+                "repositories": "ijeopardy"
+            },
+            {
+                "language": "Python",
+                "contributors": 12,
+                "stars": 5,
+                "forks": 1,
+                "repositories": "rapidsms"
+            }
+        ],
+        "topRepositories": [
+            {
+                "language": "Ruby",
+                "position": 1,
+                "contributors": 163,
+                "stars": 688,
+                "forks": 255,
+                "repository": "cruisecontrol.rb, cruisecontrol.rb-contrib, letshelp.it, HackNightLA, mongoid, metric_fu, mongomapper, global_collect, sinatra-mongoid-config, validates_url, common-ci-tasks, twdreams, israelovesiran",
+                "topContributors": [
+                    {
+                        "login": "durran",
+                        "contributions": 2314
+                    },
+                    {
+                        "login": "jnunemaker",
+                        "contributions": 802
+                    },
+                    {
+                        "login": "alexeyv",
+                        "contributions": 355
+                    }
+                ]
+            },
+            {
+                "language": "JavaScript",
+                "position": 2,
+                "contributors": 31,
+                "stars": 15,
+                "forks": 3,
+                "repository": "murmurs.air, shadow-poll, RapidFTR, kinect-spike, twonrails, pringle",
+                "topContributors": [
+                    {
+                        "login": "pungoyal",
+                        "contributions": 207
+                    },
+                    {
+                        "login": "wpc",
+                        "contributions": 157
+                    },
+                    {
+                        "login": "bguthrie",
+                        "contributions": 81
+                    }
+                ]
+            },
+            {
+                "language": "Java",
+                "position": 3,
+                "contributors": 9,
+                "stars": 8,
+                "forks": 2,
+                "repository": "krypton, eclipse_editor_widget, videoworld",
+                "topContributors": [
+                    {
+                        "login": "hraberg",
+                        "contributions": 134
+                    },
+                    {
+                        "login": "cleishm",
+                        "contributions": 50
+                    },
+                    {
+                        "login": "ketan",
+                        "contributions": 9
+                    }
+                ]
+            }
+        ]
+    }
 }
-```
-
-JSON Response:
-
-```sh
-Status: 201 Created
-```
-
-The status "201 Created" will be showed.
-
-Lets check if the record really was save in the database.
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products |
-
-JSON Response:
-```sh
-[
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  }
 ]
-```
-
-Now lets include another record.
-
-| Method | Endpoint |
-| ------ | ------ |
-| POST | http://localhost:8080/products |
-
-
-JSON Request:
-```sh
-{
-"name": "COCA-COLA",
-"description": "CCOKE ZERO"
-}
-```
-
-JSON Response:
-
-```sh
-Status: 201 Created
-```
-
-The double C in the word CCOKE was intentional, just because in the next step we will update it correctly.
-
-Before, lets see how theses two records are in the database:
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products |
-
-JSON Response:
-```sh
-[
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "CCOKE ZERO",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  }
-]
-```
-
-Now lets update the record with double C letter, "CCOKE ZERO":
-
-| Method | Endpoint |
-| ------ | ------ |
-| PUT | http://localhost:8080/products/08d2138d-0932-4583-bf94-650e0cb39a5e |
-
-JSON Request:
-
-```sh
-{
-    "name": "COCA-COLA",
-    "description": "COKE ZERO"
-  }
-```
-
-JSON Response:
-
-```sh
-Status: 200 Ok
-```
-
-Lets show again all the records.
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products |
-
-JSON Response:
-```sh
-[
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "COKE ZERO",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  }
-]
-```
-
-If we want to see only the record COKE ZERO, we need to do it:
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products/08d2138d-0932-4583-bf94-650e0cb39a5e |
-
-JSON Response:
-```sh
-{
-  "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-  "name": "COCA-COLA",
-  "description": "COKE ZERO",
-  "parent": null,
-  "images": null,
-  "childProducts": null
-}
-```
-
-Now lets include another record.
-
-| Method | Endpoint |
-| ------ | ------ |
-| POST | http://localhost:8080/products |
-
-JSON Request:
-```sh
-{
-"name": "SPRITE",
-"description": "LEMON-LIME"
-}
-```
-
-JSON Response:
-
-```sh
-Status: 201 Created
-```
-
-And lets see how are the records on the database:
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products |
-
-JSON Response:
-```sh
-[
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "COKE ZERO",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  },
-  {
-    "id": "3ddd54ae-1569-4761-9f27-83f0f60d1960",
-    "name": "SPRITE",
-    "description": "LEMON-LIME",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  }
-]
-```
-
-Now we need to test the exclude operation. lets remove "SPRITE" record on the database.
-
-| Method | Endpoint |
-| ------ | ------ |
-| DELETE | http://localhost:8080/products/3ddd54ae-1569-4761-9f27-83f0f60d1960 |
-
-
-JSON Response:
-
-```sh
-Status: 200 Ok
-```
-
-Invoke the GET method we will see all the records again. This time without "SPRITE" record.
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products |
-
-JSON Response:
-```sh
-[
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "COKE ZERO",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": null,
-    "childProducts": null
-  }
-]
-```
-
-Lets include an image to record COKE ZERO.
-
-| Method | Endpoint |
-| ------ | ------ |
-| POST | http://localhost:8080/products/08d2138d-0932-4583-bf94-650e0cb39a5e/images |
-
-JSON Request:
-```sh
-{
-	"type": "jpg"
-}
-```
-
-JSON Response:
-
-```sh
-Status: 201 Created
-```
-
-To see it we need to do this:
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products/?include=images |
-
-JSON Response:
-
-```sh
-[
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "COKE ZERO",
-    "parent": null,
-    "images": [
-      {
-        "id": "5b59f8d6-3cea-46b1-9c73-884b22f51544",
-        "type": "jpg"
-      }
-    ],
-    "childProducts": null
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": [],
-    "childProducts": null
-  }
-]
-```
-
-Now lets create a new record with the name "DIET COKE" child to "COKE" record. In this new record, we need input on parent attribute the father id, in this case "16a4db98-e659-433c-bd2a-aec43b6539ee"
-
-| Method | Endpoint |
-| ------ | ------ |
-| POST | http://localhost:8080/products |
-
-JSON Request:
-
-```sh
-{
-"name": "COCA-COLA",
-"description": "DIET COKE",
-"parent": {
-"id": "16a4db98-e659-433c-bd2a-aec43b6539ee"
-	}
-}
-```
-
-To see it we need to invoke the method GET like this:
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products?include=childProducts |
-
-JSON Response:
-
-```sh
-[
-  {
-    "id": "07e5774f-97f6-435f-aaa8-f2aeb262a4c3",
-    "name": "COCA-COLA",
-    "description": "DIET COKE",
-    "parent": {
-      "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-      "name": "COCA-COLA",
-      "description": "COKE",
-      "parent": null,
-      "images": null,
-      "childProducts": null
-    },
-    "images": null,
-    "childProducts": []
-  },
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "COKE ZERO",
-    "parent": null,
-    "images": null,
-    "childProducts": []
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": null,
-    "childProducts": [
-      {
-        "id": "07e5774f-97f6-435f-aaa8-f2aeb262a4c3",
-        "name": "COCA-COLA",
-        "description": "DIET COKE",
-        "parent": {
-          "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-          "name": "COCA-COLA",
-          "description": "COKE",
-          "parent": null,
-          "images": null,
-          "childProducts": null
-        },
-        "images": null,
-        "childProducts": null
-      }
-    ]
-  }
-]
-```
-
-Note that "COKE" record inside childProducts shows the new record "DIET COKE".
-
-And to see the images and childProducts we need to invoke the method GET like this:
-
-| Method | Endpoint |
-| ------ | ------ |
-| GET | http://localhost:8080/products?include=images,childProducts |
-
-JSON Response:
-
-```sh
-[
-  {
-    "id": "07e5774f-97f6-435f-aaa8-f2aeb262a4c3",
-    "name": "COCA-COLA",
-    "description": "DIET COKE",
-    "parent": {
-      "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-      "name": "COCA-COLA",
-      "description": "COKE",
-      "parent": null,
-      "images": null,
-      "childProducts": null
-    },
-    "images": [],
-    "childProducts": []
-  },
-  {
-    "id": "08d2138d-0932-4583-bf94-650e0cb39a5e",
-    "name": "COCA-COLA",
-    "description": "COKE ZERO",
-    "parent": null,
-    "images": [
-      {
-        "id": "5b59f8d6-3cea-46b1-9c73-884b22f51544",
-        "type": "jpg"
-      }
-    ],
-    "childProducts": []
-  },
-  {
-    "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-    "name": "COCA-COLA",
-    "description": "COKE",
-    "parent": null,
-    "images": [],
-    "childProducts": [
-      {
-        "id": "07e5774f-97f6-435f-aaa8-f2aeb262a4c3",
-        "name": "COCA-COLA",
-        "description": "DIET COKE",
-        "parent": {
-          "id": "16a4db98-e659-433c-bd2a-aec43b6539ee",
-          "name": "COCA-COLA",
-          "description": "COKE",
-          "parent": null,
-          "images": null,
-          "childProducts": null
-        },
-        "images": null,
-        "childProducts": null
-      }
-    ]
-  }
-]
-```
-
-### Important:
-
-To see all product relationships we need to use the "include" parameter to specify their relations with images and childProducts like this: 
-
-```sh
-http://localhost:8080/products?include=images,childProducts
-```
 
 ### How to run unit test
 
