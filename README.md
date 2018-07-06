@@ -1,6 +1,6 @@
 # TW-GitHub-Repository-API
 
-TW-GitHub-Repository-API is a Restful service using JAX-RS to retrieve all languagues into ThoughtWorks GitHub repository.  
+TW-GitHub-Repository-API is a Restful service that uses JAX-RS to retrieve information from the ThoughtWorks repository on GitHub to create a structure that tells you which languages are most used in the enterprise, its repositories, and key contributors.  
 
 To build this service these technologies were used: 
 
