@@ -16,56 +16,49 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.thoughtworks.repos.model.Contributor;
-import com.thoughtworks.repos.model.Repository;
-import com.thoughtworks.repos.model.Response;
-import com.thoughtworks.repos.repository.ReposRepository;
-import com.thoughtworks.repos.service.impl.ReposServiceImpl;
+import com.thoughtworks.repos.model.GitHubRepository;
+import com.thoughtworks.repos.model.TWGitHubResponse;
+import com.thoughtworks.repos.repository.GitHubReposRepository;
+import com.thoughtworks.repos.service.impl.GitHubReposServiceImpl;
 
 @RunWith(SpringRunner.class)
 public class ReposServiceTest {
 	
-	private ReposRepository reposRepository;
-	private ReposService reposService;
+	private GitHubReposRepository reposRepository;
+	private GitHubReposService reposService;
 	
 	@Before
 	public void setup() {
-		reposRepository = mock(ReposRepository.class);
-		reposService = new ReposServiceImpl(reposRepository);
+		reposRepository = mock(GitHubReposRepository.class);
+		reposService = new GitHubReposServiceImpl(reposRepository);
 	}
 	
 	@Test
 	public void shouldFindAllRepositories() {
-		Collection<Repository> repositories = new ArrayList<Repository>();
-		Repository firstRepository = mockRepository();
+		Collection<GitHubRepository> gitHubRepositories = new ArrayList<GitHubRepository>();
+		GitHubRepository firstRepository = mockRepository();
 		firstRepository.setId(Long.valueOf(1));
-		Repository secondRepository = mockRepository();
+		GitHubRepository secondRepository = mockRepository();
 		secondRepository.setId(Long.valueOf(2));;
-		repositories.add(firstRepository);
-		repositories.add(secondRepository);
+		gitHubRepositories.add(firstRepository);
+		gitHubRepositories.add(secondRepository);
 		
-		doReturn(repositories).when(reposRepository).findAllRepositories();
+		doReturn(gitHubRepositories).when(reposRepository).findAllRepositories();
 		
-		Response response = reposService.findAllLanguages();
+		TWGitHubResponse response = reposService.findAllLanguages();
 		
 		assertThat(response).isNotNull();
 		
 		verify(reposRepository, times(1)).findAllRepositories();
-		verify(reposRepository, times(1)).findContributorsByRepository(repositories);
+		verify(reposRepository, times(1)).findContributorsByRepository(gitHubRepositories);
 		
-		assertThat(response.getThoughtworks()).isNotNull();
+		assertThat(response.getThoughtworksRepositories()).isNotNull();
 	}
 
-	private Repository mockRepository() {
-		Repository repository = new Repository();
-		repository.setName("Mock Repo");
-		repository.setLanguage("Mock Language");
-		repository.setForks(5);
-		repository.setStargazers(2);
+	private GitHubRepository mockRepository() {
+		GitHubRepository repository = new GitHubRepository(1,"Mock Repo","Mock Language",2,5);
 		List<Contributor> contributors = new ArrayList<Contributor>();
-		Contributor contributor = new Contributor();
-		contributor.setLogin("Mock Login");
-		contributor.setContributions(12);
-		contributors.add(contributor);
+		contributors.add(new Contributor("mockLogin", 12));
 		repository.setContributors(contributors);
 		return repository;
 	}

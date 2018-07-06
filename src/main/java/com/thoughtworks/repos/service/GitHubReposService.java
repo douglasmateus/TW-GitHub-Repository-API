@@ -1,13 +1,13 @@
 package com.thoughtworks.repos.service;
 
-import com.thoughtworks.repos.model.Response;
+import com.thoughtworks.repos.model.TWGitHubResponse;
 
-public interface ReposService {
+public interface GitHubReposService {
 
 	/**
 	 * Provides business operations for the Repository entity.
 	 * 
 	 * @return Response.
 	 */
-	public Response findAllLanguages();
+	public TWGitHubResponse findAllLanguages();
 }

@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.thoughtworks.repos.model.Contributor;
+import com.thoughtworks.repos.model.GitHubRepository;
 import com.thoughtworks.repos.model.Languages;
-import com.thoughtworks.repos.model.Repository;
-import com.thoughtworks.repos.model.Response;
-import com.thoughtworks.repos.model.Thoughtworks;
+import com.thoughtworks.repos.model.TWGitHubResponse;
+import com.thoughtworks.repos.model.ThoughtworksRepositories;
 import com.thoughtworks.repos.model.TopRepositories;
-import com.thoughtworks.repos.repository.ReposRepository;
-import com.thoughtworks.repos.service.ReposService;
+import com.thoughtworks.repos.repository.GitHubReposRepository;
+import com.thoughtworks.repos.service.GitHubReposService;
 
 /**
  * Basic Repository service implementation.
@@ -26,15 +26,15 @@ import com.thoughtworks.repos.service.ReposService;
  * @author douglas.mateus
  */
 @Service
-public class ReposServiceImpl implements ReposService {
+public class GitHubReposServiceImpl implements GitHubReposService {
 
 	private static final int MAX_TOP_LANGUAGES_CONTRIBUTORS = 3;
 
-	private ReposRepository reposRepository;
+	private GitHubReposRepository reposRepository;
 	
-	private Logger logger = Logger.getLogger(ReposServiceImpl.class);
+	private Logger logger = Logger.getLogger(GitHubReposServiceImpl.class);
 	
-	public ReposServiceImpl(@Autowired ReposRepository reposRepository) {
+	public GitHubReposServiceImpl(@Autowired GitHubReposRepository reposRepository) {
 		this.reposRepository = reposRepository;
 	}
 
@@ -43,13 +43,13 @@ public class ReposServiceImpl implements ReposService {
 	 * @return Response
 	 */
 	@Override
-	public Response findAllLanguages() {
-		Response response = new Response();
-		Thoughtworks thoughtworks = new Thoughtworks();
+	public TWGitHubResponse findAllLanguages() {
+		TWGitHubResponse response = new TWGitHubResponse();
+		ThoughtworksRepositories thoughtworks = new ThoughtworksRepositories();
 		List<Languages> languages = new ArrayList<Languages>();
 		
 		logger.info("Find All Repositories");
-		Collection<Repository> repositories = reposRepository.findAllRepositories();
+		Collection<GitHubRepository> repositories = reposRepository.findAllRepositories();
 		reposRepository.findContributorsByRepository(repositories);
 		
 		logger.info("Create Languages");
@@ -63,7 +63,7 @@ public class ReposServiceImpl implements ReposService {
 		List<TopRepositories> topRepositories = this.createTopRepositories(languages);
 		thoughtworks.setTopRepositories(topRepositories);
 		
-		response.setThoughtworks(thoughtworks);
+		response.setThoughtworksRepositories(thoughtworks);
 		
 		return response;
 	}
@@ -73,9 +73,9 @@ public class ReposServiceImpl implements ReposService {
 	 * @param repositories
 	 * @return Map<String, Languages>
 	 */
-	public Map<String, Languages> createLanguages(Collection<Repository> repositories) {
+	public Map<String, Languages> createLanguages(Collection<GitHubRepository> repositories) {
 		Map<String, Languages> languagesMap = new HashMap<String, Languages>();
-		for (Repository repository : repositories) {
+		for (GitHubRepository repository : repositories) {
 			String repositoryName = repository.getName();
 			long stargazers = repository.getStargazers();
 			long forks = repository.getForks();

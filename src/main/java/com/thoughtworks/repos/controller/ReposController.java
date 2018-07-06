@@ -8,8 +8,8 @@ import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thoughtworks.repos.model.Response;
-import com.thoughtworks.repos.service.ReposService;
+import com.thoughtworks.repos.model.TWGitHubResponse;
+import com.thoughtworks.repos.service.GitHubReposService;
 
 /**
  * RepositoriesController provides REST operations for the repository resource 
@@ -23,14 +23,14 @@ import com.thoughtworks.repos.service.ReposService;
 public class ReposController {
 
 	@Autowired
-	private ReposService reposService;
+	private GitHubReposService reposService;
 	
 	/**
 	 * Gets all languages
 	 * @return thoughtworks repository structure
 	 */
 	@GET
-	public Response getAllLanguages() {
+	public TWGitHubResponse getAllLanguages() {
 		return reposService.findAllLanguages();
 	}
 }
