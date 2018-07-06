@@ -24,7 +24,6 @@ public class SpringBootApplicationTest {
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 		assertTrue(response.getHeaders().isEmpty());
-		//assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 	
 	@Test
@@ -34,6 +33,5 @@ public class SpringBootApplicationTest {
 
 		assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
 		assertTrue(response.getHeaders().isEmpty());
-		//assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 }

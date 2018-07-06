@@ -24,9 +24,6 @@ public class ReposRepositoryTest {
 
 		ResponseEntity<String> response = this.restTemplate.getForEntity("http://localhost:3000/thoughtworks/repositories", String.class);
 		
-		String expected = "{thoughtworks:{languages:{language:Ruby,contributors:163,stars:688,forks:255,repositories:mongoid},topRepositories:{language:Ruby,position:1,contributors:163,stars:688,forks:255,repository:mongoid,topContributors:{login:durran,contributions:2314}}}}";
-
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		//JSONAssert.assertEquals(expected, response.getBody(), false);
 	}
 }
