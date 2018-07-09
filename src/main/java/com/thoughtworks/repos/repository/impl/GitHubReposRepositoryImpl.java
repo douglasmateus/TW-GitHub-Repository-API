@@ -14,8 +14,8 @@ import com.thoughtworks.repos.model.Contributor;
 import com.thoughtworks.repos.model.GitHubRepository;
 import com.thoughtworks.repos.repository.GitHubReposRepository;
 import com.thoughtworks.repos.service.impl.GitHubReposServiceImpl;
-import com.thoughtworks.repos.util.HeaderEnum;
-import com.thoughtworks.repos.util.Headers;
+import com.thoughtworks.repos.util.HttpHeaderEnum;
+import com.thoughtworks.repos.util.HttpUtil;
 
 /**
  * Rest implementation to access GitHub API.
@@ -25,20 +25,16 @@ import com.thoughtworks.repos.util.Headers;
 @Component
 public class GitHubReposRepositoryImpl implements GitHubReposRepository{
 
-	/**
-	 * Thoughtworks Url repositories 
-	 */
-	public static final String THOUGHTWORKS_REPOSITORY = "https://api.github.com/orgs/thoughtworks/repos";
-
-	/**
-	 * Thoughtworks Url repository contributors
-	 */
-	private static final String THOUGHTWORKS_CONTRIBUTORS = "https://api.github.com/repos/thoughtworks/%s/contributors";
-	
-	private RestTemplate restTemplate;
-	
 	@Value("${api.github.personalaccesstoken}")
 	private String token;
+	
+	@Value("${api.github.thoughtworks.url}")
+	private String thoughtworksUrl;
+	
+	@Value("${api.github.thoughtworks.contributors.url}")
+	private String thoughtworksContributorsUrl;
+	
+	private RestTemplate restTemplate;
 	
 	private Logger logger = Logger.getLogger(GitHubReposServiceImpl.class);
 	
@@ -46,18 +42,17 @@ public class GitHubReposRepositoryImpl implements GitHubReposRepository{
 	public List<GitHubRepository> findAllRepositories() {
 		logger.info("Start to find all thoughtworks repositories.");
 		restTemplate = new RestTemplate();
-		HttpEntity<String> entity = new HttpEntity<>(HeaderEnum.HEADERS.getValue(), Headers.createHeaders(token));
-		return restTemplate.exchange(THOUGHTWORKS_REPOSITORY, HttpMethod.GET, entity, new ParameterizedTypeReference<List<GitHubRepository>>() {}).getBody();
+		HttpEntity<String> entity = new HttpEntity<>(HttpHeaderEnum.HEADERS.getValue(), HttpUtil.createHeaders(token));
+		return restTemplate.exchange(HttpUtil.buildUrl(thoughtworksUrl, token, null), HttpMethod.GET, entity, new ParameterizedTypeReference<List<GitHubRepository>>() {}).getBody();
 	}
 	
 	@Override
 	public void setContributorsByRepository(List<GitHubRepository> repositories) {
 		logger.info("Starting the Contributors search for each repository.");
     	for (GitHubRepository repository : repositories) {
-    		String url = String.format(THOUGHTWORKS_CONTRIBUTORS, repository.getName());
     		restTemplate = new RestTemplate();
-    		HttpEntity<String> entity = new HttpEntity<>(HeaderEnum.HEADERS.getValue(), Headers.createHeaders(token));
-    		List<Contributor> contributors = restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Contributor>>() {}).getBody();
+    		HttpEntity<String> entity = new HttpEntity<>(HttpHeaderEnum.HEADERS.getValue(), HttpUtil.createHeaders(token));
+    		List<Contributor> contributors = restTemplate.exchange(HttpUtil.buildUrl(thoughtworksContributorsUrl, token, repository.getName()), HttpMethod.GET, entity, new ParameterizedTypeReference<List<Contributor>>() {}).getBody();
 		    if (contributors == null) {
 				String message = "Repository " + repository.getName() + " has no Contributors.";
 				logger.info(message);
