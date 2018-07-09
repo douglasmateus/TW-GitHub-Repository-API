@@ -3,6 +3,7 @@ package com.thoughtworks.repos.repository.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -36,13 +37,16 @@ public class GitHubReposRepositoryImpl implements GitHubReposRepository{
 	
 	private RestTemplate restTemplate;
 	
+	@Value("${api.github.personalaccesstoken}")
+	private String token;
+	
 	private Logger logger = Logger.getLogger(GitHubReposServiceImpl.class);
 	
 	@Override
 	public List<GitHubRepository> findAllRepositories() {
 		logger.info("Start to find all thoughtworks repositories.");
 		restTemplate = new RestTemplate();
-		HttpEntity<String> entity = new HttpEntity<>(HeaderEnum.HEADERS.getValue(), Headers.createHeaders());
+		HttpEntity<String> entity = new HttpEntity<>(HeaderEnum.HEADERS.getValue(), Headers.createHeaders(token));
 		return restTemplate.exchange(THOUGHTWORKS_REPOSITORY, HttpMethod.GET, entity, new ParameterizedTypeReference<List<GitHubRepository>>() {}).getBody();
 	}
 	
@@ -52,7 +56,7 @@ public class GitHubReposRepositoryImpl implements GitHubReposRepository{
     	for (GitHubRepository repository : repositories) {
     		String url = String.format(THOUGHTWORKS_CONTRIBUTORS, repository.getName());
     		restTemplate = new RestTemplate();
-    		HttpEntity<String> entity = new HttpEntity<>(HeaderEnum.HEADERS.getValue(), Headers.createHeaders());
+    		HttpEntity<String> entity = new HttpEntity<>(HeaderEnum.HEADERS.getValue(), Headers.createHeaders(token));
     		List<Contributor> contributors = restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Contributor>>() {}).getBody();
 		    if (contributors == null) {
 				String message = "Repository " + repository.getName() + " has no Contributors.";
