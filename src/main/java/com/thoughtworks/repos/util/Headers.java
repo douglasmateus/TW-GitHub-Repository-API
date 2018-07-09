@@ -7,7 +7,7 @@ public class Headers {
 	/**
 	 * GitHub Personal Access Tokens 
 	 */
-	public static final String PERSONAL_ACCESS_TOKENS = "339884e127408e7fff81d8291ba9b161f0304e9f";
+	public static final String PERSONAL_ACCESS_TOKENS = "f47b59dd400ed7f2c8fee2536c676c93f4cb3bca";
 	
 	/**
 	 * Creates a HttpHeaders with Personal Access Tokens necessary to limited
@@ -19,9 +19,16 @@ public class Headers {
 		HttpHeaders headers = new HttpHeaders() {
 			private static final long serialVersionUID = -1643427945865752875L;
 			{
-				set("Authorization", PERSONAL_ACCESS_TOKENS);
+				set(HeaderEnum.AUTHORIZATION.getValue(), PERSONAL_ACCESS_TOKENS);
 			}
 		};
 		return headers;
+	}
+	
+	public static String createUrl(String url) {
+		StringBuffer strBuff = new StringBuffer();
+		strBuff.append(url);
+		strBuff.append(HeaderEnum.HEADER_PARAMETERS.getValue());
+		return strBuff.toString();
 	}
 }

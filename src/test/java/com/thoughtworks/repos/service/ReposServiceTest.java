@@ -7,7 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;
@@ -35,7 +34,7 @@ public class ReposServiceTest {
 	
 	@Test
 	public void shouldFindAllRepositories() {
-		Collection<GitHubRepository> gitHubRepositories = new ArrayList<GitHubRepository>();
+		List<GitHubRepository> gitHubRepositories = new ArrayList<GitHubRepository>();
 		GitHubRepository firstRepository = mockRepository();
 		firstRepository.setId(Long.valueOf(1));
 		GitHubRepository secondRepository = mockRepository();
@@ -50,7 +49,7 @@ public class ReposServiceTest {
 		assertThat(response).isNotNull();
 		
 		verify(reposRepository, times(1)).findAllRepositories();
-		verify(reposRepository, times(1)).findContributorsByRepository(gitHubRepositories);
+		verify(reposRepository, times(1)).setContributorsByRepository(gitHubRepositories);
 		
 		assertThat(response.getThoughtworksRepositories()).isNotNull();
 	}

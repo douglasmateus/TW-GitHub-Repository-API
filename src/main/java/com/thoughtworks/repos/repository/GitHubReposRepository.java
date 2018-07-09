@@ -1,6 +1,6 @@
 package com.thoughtworks.repos.repository;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.thoughtworks.repos.model.GitHubRepository;
 
@@ -11,7 +11,7 @@ import com.thoughtworks.repos.model.GitHubRepository;
  */
 public interface GitHubReposRepository {
 
-	Collection<GitHubRepository> findAllRepositories();
+	List<GitHubRepository> findAllRepositories();
 	
-	void findContributorsByRepository(Collection<GitHubRepository> repositories);
+	void setContributorsByRepository(List<GitHubRepository> repositories);
 }

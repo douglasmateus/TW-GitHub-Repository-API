@@ -5,6 +5,9 @@ public class Contributor implements Comparable<Contributor>{
 	private String login;
 	private long contributions;
 	
+	public Contributor() {
+		
+	}
 	public Contributor(String login, long contributions) {
 		this.login = login;
 		this.contributions = contributions;

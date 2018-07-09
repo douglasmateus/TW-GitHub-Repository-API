@@ -49,17 +49,17 @@ public class GitHubReposServiceImpl implements GitHubReposService {
 		List<Languages> languages = new ArrayList<Languages>();
 		
 		logger.info("Find All Repositories");
-		Collection<GitHubRepository> repositories = reposRepository.findAllRepositories();
-		reposRepository.findContributorsByRepository(repositories);
+		List<GitHubRepository> repositories = reposRepository.findAllRepositories();
+		reposRepository.setContributorsByRepository(repositories);
 		
-		logger.info("Create Languages");
+		logger.info("Organize repositories by languages");
 		Map<String, Languages> languagesMap = this.createLanguages(repositories);
 		for (String keySet : languagesMap.keySet()) {
 			languages.add(languagesMap.get(keySet));
 		}
 		thoughtworks.setLanguages(languages);
 
-		logger.info("Create Top Repositories");
+		logger.info("Sort Top Repositories");
 		List<TopRepositories> topRepositories = this.createTopRepositories(languages);
 		thoughtworks.setTopRepositories(topRepositories);
 		
@@ -77,8 +77,8 @@ public class GitHubReposServiceImpl implements GitHubReposService {
 		Map<String, Languages> languagesMap = new HashMap<String, Languages>();
 		for (GitHubRepository repository : repositories) {
 			String repositoryName = repository.getName();
-			long stargazers = repository.getStargazers();
-			long forks = repository.getForks();
+			long stargazers = repository.getStargazers_count();
+			long forks = repository.getForks_count();
 			long contributors = repository.getContributors() != null && repository.getContributors().size() > 0 ? repository.getContributors().size() : 0;
 			List<Contributor> topContributors = repository.getContributors();
 			Languages languages = new Languages();

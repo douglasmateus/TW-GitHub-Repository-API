@@ -8,11 +8,11 @@ public class GitHubRepository {
 	
 	private String name;
 	
-	private long stargazers;
+	private long stargazers_count;
 	
 	private String language;
 	
-	private long forks;
+	private long forks_count;
 	
 	private List<Contributor> contributors;
 
@@ -23,8 +23,8 @@ public class GitHubRepository {
 		this.id = id;
 		this.name = name;
 		this.language = language;
-		this.stargazers = stargazers;
-		this.forks = forks;
+		this.stargazers_count = stargazers;
+		this.forks_count = forks;
 	}
 
 	public long getId() {
@@ -39,16 +39,16 @@ public class GitHubRepository {
 		return name;
 	}
 
-	public long getStargazers() {
-		return stargazers;
+	public long getStargazers_count() {
+		return stargazers_count;
 	}
 
 	public String getLanguage() {
 		return language;
 	}
 
-	public long getForks() {
-		return forks;
+	public long getForks_count() {
+		return forks_count;
 	}
 	
 	public List<Contributor> getContributors() {
