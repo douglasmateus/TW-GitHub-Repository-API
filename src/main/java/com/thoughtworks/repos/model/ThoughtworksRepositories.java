@@ -4,20 +4,20 @@ import java.util.List;
 
 public class ThoughtworksRepositories {
 	
-	private List<Languages> languages;
+	private List<Language> languages;
 	
-	private List<TopRepositories> topRepositories;
+	private List<TopRepository> topRepositories;
 	
-	public List<Languages> getLanguages() {
+	public List<Language> getLanguages() {
 		return languages;
 	}
-	public void setLanguages(List<Languages> languages) {
+	public void setLanguages(List<Language> languages) {
 		this.languages = languages;
 	}
-	public List<TopRepositories> getTopRepositories() {
+	public List<TopRepository> getTopRepositories() {
 		return topRepositories;
 	}
-	public void setTopRepositories(List<TopRepositories> topRepositories) {
+	public void setTopRepositories(List<TopRepository> topRepositories) {
 		this.topRepositories = topRepositories;
 	}
 }

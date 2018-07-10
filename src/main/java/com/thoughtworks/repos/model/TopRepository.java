@@ -2,7 +2,7 @@ package com.thoughtworks.repos.model;
 
 import java.util.List;
 
-public class TopRepositories {
+public class TopRepository {
 	private String language;
 	private long position;
 	private long contributors;
@@ -11,6 +11,18 @@ public class TopRepositories {
 	private String repository;
 	private List<Contributor> topContributors;
 	
+	public TopRepository() {
+
+	}
+	public TopRepository(String language, long position, long contributors, long stars, long forks, String repository, List<Contributor> topContributors) {
+		this.language = language;
+		this.position = position;
+		this.contributors = contributors;
+		this.stars = stars;
+		this.forks = forks;
+		this.repository = repository;
+		this.topContributors = topContributors;
+	}
 	public String getLanguage() {
 		return language;
 	}

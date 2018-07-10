@@ -44,14 +44,14 @@ public class ReposServiceTest {
 		
 		doReturn(gitHubRepositories).when(reposRepository).findAllRepositories();
 		
-		TWGitHubResponse response = reposService.findAllLanguages();
+		TWGitHubResponse twGitHubResponse = reposService.findAllLanguages();
 		
-		assertThat(response).isNotNull();
+		assertThat(twGitHubResponse).isNotNull();
 		
 		verify(reposRepository, times(1)).findAllRepositories();
 		verify(reposRepository, times(1)).setContributorsByRepository(gitHubRepositories);
 		
-		assertThat(response.getThoughtworksRepositories()).isNotNull();
+		assertThat(twGitHubResponse.getThoughtworksRepositories()).isNotNull();
 	}
 
 	private GitHubRepository mockRepository() {

@@ -27,11 +27,20 @@ public class SpringBootApplicationTest {
 	}
 	
 	@Test
-	public void withStatus() throws Exception {
+	public void withStatusForbidden() throws Exception {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withStatus(HttpStatus.FORBIDDEN);
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+		assertTrue(response.getHeaders().isEmpty());
+	}
+	
+	@Test
+	public void withStatusUnAuthorized() throws Exception {
+		DefaultResponseCreator responseCreator = MockRestResponseCreators.withStatus(HttpStatus.UNAUTHORIZED);
+		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
+
+		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 		assertTrue(response.getHeaders().isEmpty());
 	}
 }

@@ -5,15 +5,10 @@ import java.util.List;
 public class GitHubRepository {
 
 	private long id;
-	
 	private String name;
-	
-	private long stargazers_count;
-	
 	private String language;
-	
+	private long stargazers_count;
 	private long forks_count;
-	
 	private List<Contributor> contributors;
 
 	public GitHubRepository() {

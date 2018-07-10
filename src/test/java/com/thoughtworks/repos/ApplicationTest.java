@@ -2,7 +2,7 @@ package com.thoughtworks.repos;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.thoughtworks.repos.model.TWGitHubResponse;
+import com.thoughtworks.repos.model.ThoughtworksRepositories;
 
 public class ApplicationTest {
 	
@@ -13,7 +13,7 @@ public class ApplicationTest {
         System.out.println("Testing listAllLanguages API-----------");
          
         RestTemplate restTemplate = new RestTemplate();
-        TWGitHubResponse response = restTemplate.getForObject(REST_SERVICE_URI+"/repositories/", TWGitHubResponse.class);
+        ThoughtworksRepositories response = restTemplate.getForObject(REST_SERVICE_URI+"/repositories/", ThoughtworksRepositories.class);
         
         if (response != null) {
         	System.out.println(response.toString());

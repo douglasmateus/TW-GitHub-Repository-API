@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Languages implements Comparable<Languages>{
+public class Language implements Comparable<Language>{
 	
 	private String language;
 	private long contributors;
@@ -14,7 +14,18 @@ public class Languages implements Comparable<Languages>{
 	
 	@JsonIgnore
 	private List<Contributor> topContributors;
-	
+
+	public Language() {
+
+	}
+	public Language(String language, long contributors, long stars, long forks, String repositories, List<Contributor> topContributors) {
+		this.language = language;
+		this.contributors = contributors;
+		this.stars = stars;
+		this.forks = forks;
+		this.repositories = repositories;
+		this.topContributors = topContributors;
+	}
 	public String getLanguage() {
 		return language;
 	}
@@ -58,7 +69,7 @@ public class Languages implements Comparable<Languages>{
 				+ forks + ", repositories=" + repositories + ", topContributors=" + topContributors + "]";
 	}
 	@Override
-	public int compareTo(Languages o) {
+	public int compareTo(Language o) {
 		if (this.contributors > o.getContributors() && 
 			new String(this.repositories).split(",").length > new String(o.repositories).split(",").length && 
 			this.stars > o.getStars() && 
