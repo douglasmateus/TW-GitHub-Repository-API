@@ -39,8 +39,8 @@ public class GitHubReposServiceImpl implements GitHubReposService {
 	}
 
 	/**
-	 * Retrieves Response entity
-	 * @return Response
+	 * Retrieves TWGitHubResponse entity
+	 * @return TWGitHubResponse
 	 */
 	@Override
 	public TWGitHubResponse findAllLanguages() {
@@ -76,38 +76,32 @@ public class GitHubReposServiceImpl implements GitHubReposService {
 		Map<String, Language> languagesMap = new HashMap<String, Language>();
 		for (GitHubRepository repository : repositories) {
 			String repositoryName = repository.getName();
-			long stargazers = repository.getStargazers_count();
+			long stars = repository.getStargazers_count();
 			long forks = repository.getForks_count();
 			long contributors = repository.getContributors() != null && repository.getContributors().size() > 0 ? repository.getContributors().size() : 0;
 			List<Contributor> topContributors = repository.getContributors();
-			Language languages = new Language();
 			if (repository.getLanguage() == null) {
 				logger.info("Repository " + repositoryName + " contains language name null.");
 			} else if (languagesMap.containsKey(repository.getLanguage())) {
-				languages = languagesMap.get(repository.getLanguage());
-				stargazers = stargazers + languages.getStars();
-				forks = forks + languages.getForks();
-				contributors = contributors + languages.getContributors();
-				String repositoriesNames = languages.getRepositories() + ", " + repositoryName;
+				
+				Language  language = languagesMap.get(repository.getLanguage());
+				stars = stars + language.getStars();
+				forks = forks + language.getForks();
+				contributors = contributors + language.getContributors();
+				String repositoriesNames = language.getRepositories() + ", " + repositoryName;
 
-				languages.setRepositories(repositoriesNames);
-				languages.setStars(stargazers);
-				languages.setForks(forks);
-				languages.setContributors(contributors);
-				if (languages.getTopContributors() == null && topContributors != null && topContributors.size() > 0) {
-					languages.setTopContributors(topContributors);
+				language.setRepositories(repositoriesNames);
+				language.setStars(stars);
+				language.setForks(forks);
+				language.setContributors(contributors);
+				if (language.getTopContributors() == null && topContributors != null && topContributors.size() > 0) {
+					language.setTopContributors(topContributors);
 				} else if (topContributors != null && topContributors.size() > 0) {
-					languages.getTopContributors().addAll(topContributors);
+					language.getTopContributors().addAll(topContributors);
 				}
-				languagesMap.put(repository.getLanguage(), languages);
+				languagesMap.put(repository.getLanguage(), language);
 			} else {
-				languages.setLanguage(repository.getLanguage());
-				languages.setRepositories(repositoryName);
-				languages.setStars(stargazers);
-				languages.setForks(forks);
-				languages.setContributors(contributors);
-				languages.setTopContributors(topContributors);
-				languagesMap.put(repository.getLanguage(), languages);
+				languagesMap.put(repository.getLanguage(), new Language(repository.getLanguage(), contributors, stars, forks, repositoryName, topContributors));
 			}
 		}
 		return languagesMap;
@@ -123,26 +117,25 @@ public class GitHubReposServiceImpl implements GitHubReposService {
 		Collections.sort(languages);
 		int sizeLanguages = languages.size() > MAX_TOP_LANGUAGES_CONTRIBUTORS ? MAX_TOP_LANGUAGES_CONTRIBUTORS : languages.size();
 		for (int i = 0; i < sizeLanguages; i++) {
-			TopRepository topRepository = new TopRepository();
-			topRepository.setLanguage(languages.get(i).getLanguage());
-			topRepository.setPosition(i + 1);
-			topRepository.setContributors(languages.get(i).getContributors());
-			topRepository.setStars(languages.get(i).getStars());
-			topRepository.setForks(languages.get(i).getForks());
-			topRepository.setRepository(languages.get(i).getRepositories());
+			String language = languages.get(i).getLanguage();
+			int position = i + 1;
+			long contributors = languages.get(i).getContributors();
+			long stars = languages.get(i).getStars();
+			long forks = languages.get(i).getForks();
+			String repositories = languages.get(i).getRepositories();
+			List<Contributor> top3Contributors = new ArrayList<Contributor>();
+			
 			if (languages.get(i).getTopContributors() == null) {
-				logger.info("Language "+ languages.get(i).getLanguage() +" has no Contributors.");
+				logger.info("Language "+ language +" has no Contributors.");
 			} else {
 				List<Contributor> topContributors = languages.get(i).getTopContributors();
 				Collections.sort(topContributors);
 				int sizeTopContributors = topContributors.size() > MAX_TOP_LANGUAGES_CONTRIBUTORS ? MAX_TOP_LANGUAGES_CONTRIBUTORS : topContributors.size();
-				List<Contributor> top3Contributors = new ArrayList<Contributor>();
 				for (int j = 0; j < sizeTopContributors; j++) {
 					top3Contributors.add(topContributors.get(j));
 				}
-				topRepository.setTopContributors(top3Contributors);
 			}
-			topRepositories.add(topRepository);
+			topRepositories.add(new TopRepository(language, contributors, stars, forks, repositories, top3Contributors, position));
 		}
 		return topRepositories;
 	}

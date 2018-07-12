@@ -2,10 +2,12 @@ package com.thoughtworks.repos.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class ThoughtworksRepositories {
 	
+	@JsonIgnoreProperties(value = {"topContributors"})
 	private List<Language> languages;
-	
 	private List<TopRepository> topRepositories;
 	
 	public List<Language> getLanguages() {
