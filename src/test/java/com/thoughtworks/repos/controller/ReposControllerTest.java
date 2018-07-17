@@ -1,5 +1,7 @@
 package com.thoughtworks.repos.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import org.mockito.InjectMocks;
 
 import com.thoughtworks.repos.model.Contributor;
 import com.thoughtworks.repos.model.Language;
+import com.thoughtworks.repos.model.TWGitHubResponse;
 import com.thoughtworks.repos.model.ThoughtworksRepositories;
 import com.thoughtworks.repos.model.TopRepository;
 
@@ -19,16 +22,18 @@ public class ReposControllerTest {
 	@Test
 	public void shouldReturnSuccessAllLanguages() {
 		
-		//ThoughtworksRepositories thoughtworksRepositories = mockThoughtworksRepositories();
-		mockThoughtworksRepositories();
+		TWGitHubResponse twGitHubResponse = mockThoughtworksRepositories();
 		
-		//ThoughtworksRepositories response = reposControllerTest.getAllLanguages();
+		TWGitHubResponse response = reposControllerTest.getAllLanguages();
+		
+		assertThat(twGitHubResponse.getThoughtworksRepositories()).isIn(response.getThoughtworksRepositories());
 		
 		
 		
 	}
 
-	private ThoughtworksRepositories mockThoughtworksRepositories() {
+	private TWGitHubResponse mockThoughtworksRepositories() {
+		TWGitHubResponse twGitHubResponse = new TWGitHubResponse();
 		ThoughtworksRepositories thoughtworksRepositories = new ThoughtworksRepositories();
 		List<Language> languages = new ArrayList<Language>();
 		List<Contributor> topContributors = new ArrayList<Contributor>();
@@ -42,7 +47,8 @@ public class ReposControllerTest {
 		topContributors = new ArrayList<Contributor>();
 		topRepositories.add(new TopRepository("Ruby", 163, 688, 255, "cruisecontrol.rb, cruisecontrol.rb-contrib, letshelp.it", topContributors, 1));
 		thoughtworksRepositories.setTopRepositories(topRepositories);
+		twGitHubResponse.setThoughtworksRepositories(thoughtworksRepositories);
 		
-		return thoughtworksRepositories;
+		return twGitHubResponse;
 	}
 }
